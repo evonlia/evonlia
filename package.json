@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check": "node scripts/check.mjs",
+    "prebuild": "node scripts/check.mjs"
   },
   "dependencies": {
     "@fontsource-variable/jost": "^5.3.0",
