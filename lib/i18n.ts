@@ -21,6 +21,7 @@ export const dict = {
       includes: "What you get",
     },
     work: { title: "Our work", visit: "Visit" },
+    theme: { toLight: "Switch to light mode", toDark: "Switch to dark mode" },
     process: {
       title: "From first call to launch",
       steps: [
@@ -91,6 +92,7 @@ export const dict = {
       includes: "ما ستحصل عليه",
     },
     work: { title: "أعمالنا", visit: "زيارة" },
+    theme: { toLight: "التبديل إلى الوضع الفاتح", toDark: "التبديل إلى الوضع الداكن" },
     process: {
       title: "من أول مكالمة حتى الإطلاق",
       steps: [

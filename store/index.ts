@@ -1,13 +1,15 @@
 import { configureStore, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Lang } from "@/lib/i18n";
+import type { Theme } from "@/lib/theme";
 
 /* ---------- UI slice: language + mobile menu ---------- */
-type UiState = { lang: Lang; menuOpen: boolean };
+type UiState = { lang: Lang; menuOpen: boolean; theme: Theme };
 const ui = createSlice({
   name: "ui",
-  initialState: { lang: "en", menuOpen: false } as UiState,
+  initialState: { lang: "en", menuOpen: false, theme: "dark" } as UiState,
   reducers: {
     setLang: (s, a: PayloadAction<Lang>) => { s.lang = a.payload; },
+    setTheme: (s, a: PayloadAction<Theme>) => { s.theme = a.payload; },
     toggleMenu: (s) => { s.menuOpen = !s.menuOpen; },
     closeMenu: (s) => { s.menuOpen = false; },
   },
@@ -65,7 +67,7 @@ const admin = createSlice({
   },
 });
 
-export const { setLang, toggleMenu, closeMenu } = ui.actions;
+export const { setLang, setTheme, toggleMenu, closeMenu } = ui.actions;
 export const { setView, setFilter, setSearch, select, shiftWeek } = admin.actions;
 export const { chooseService, chooseDate, chooseTime, chooseMode, setDetail, goToStep, confirm, reset } = booking.actions;
 

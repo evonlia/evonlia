@@ -3,12 +3,19 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector, useT } from "@/store/hooks";
-import { closeMenu, setLang, toggleMenu } from "@/store";
+import { closeMenu, setLang, setTheme, toggleMenu } from "@/store";
+import { applyTheme } from "@/lib/theme";
 
 export default function Header() {
   const { t, lang } = useT();
   const dispatch = useAppDispatch();
   const open = useAppSelector((s) => s.ui.menuOpen);
+  const theme = useAppSelector((s) => s.ui.theme);
+  const flipTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    dispatch(setTheme(next));
+    applyTheme(next);
+  };
 
   const links = [
     { href: "#services", label: t.nav.services },
@@ -39,6 +46,13 @@ export default function Header() {
         <div className="header__actions">
           <button className="lang" onClick={() => dispatch(setLang(lang === "en" ? "ar" : "en"))} lang={lang === "en" ? "ar" : "en"}>
             {t.lang}
+          </button>
+          <button className="theme-btn" onClick={flipTheme} aria-label={theme === "dark" ? t.theme.toLight : t.theme.toDark} title={theme === "dark" ? t.theme.toLight : t.theme.toDark}>
+            {theme === "dark" ? (
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" /></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7Z" /></svg>
+            )}
           </button>
           <a href="#book" className="btn btn--gold btn--sm header__cta">{t.nav.book}</a>
           <button

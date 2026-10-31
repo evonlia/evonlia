@@ -3,9 +3,18 @@
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { makeStore, setLang } from "@/store";
+import { makeStore, setLang, setTheme } from "@/store";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import type { Lang } from "@/lib/i18n";
+
+// The theme is already on <html> (set by the script in the page head); this only tells the store so the toggle shows the right icon.
+function ThemeSync() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (document.documentElement.dataset.theme === "light") dispatch(setTheme("light"));
+  }, [dispatch]);
+  return null;
+}
 
 function LangSync() {
   const lang = useAppSelector((s) => s.ui.lang);
@@ -33,6 +42,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <Provider store={store}>
       <QueryClientProvider client={client}>
         <LangSync />
+        <ThemeSync />
         {children}
       </QueryClientProvider>
     </Provider>

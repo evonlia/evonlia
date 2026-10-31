@@ -8,6 +8,7 @@ import "@fontsource/cairo/arabic-400.css";
 import "@fontsource/cairo/arabic-600.css";
 import "./globals.css";
 import Providers from "./providers";
+import { themeScript } from "@/lib/theme";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -23,7 +24,10 @@ export const viewport: Viewport = { themeColor: "#08090B" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>
