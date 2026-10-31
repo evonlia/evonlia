@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { addBooking, freeSlots, type Booking } from "@/lib/bookings-db";
 import { SERVICES } from "@/lib/services";
+import { SITE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -18,13 +19,13 @@ export async function POST(req: NextRequest) {
   const serviceId = clean(body.serviceId, 40);
   const date = clean(body.date, 10);
   const time = clean(body.time, 5);
-  const mode = clean(body.mode, 10) as Booking["mode"];
+  const mode = (clean(body.mode, 10) || SITE.modes[0]) as Booking["mode"];
   const name = clean(body.name, 120);
   const email = clean(body.email, 200);
   const phone = clean(body.phone, 40);
 
   if (!SERVICES.some((s) => s.id === serviceId)) return NextResponse.json({ error: "topic" }, { status: 422 });
-  if (!["video", "phone", "visit"].includes(mode)) return NextResponse.json({ error: "mode" }, { status: 422 });
+  if (!SITE.modes.includes(mode)) return NextResponse.json({ error: "mode" }, { status: 422 });
   if (name.length < 2) return NextResponse.json({ error: "name" }, { status: 422 });
   if (!EMAIL.test(email)) return NextResponse.json({ error: "email" }, { status: 422 });
   if (phone.replace(/\D/g, "").length < 7) return NextResponse.json({ error: "phone" }, { status: 422 });

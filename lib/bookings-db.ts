@@ -67,9 +67,13 @@ export function nowInSiteTz() {
   };
 }
 
+const toMinutes = (t: string) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+const toTime = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+
+/** Every start time of a day: a meeting must fit before closing, so with 90 minutes and 20:00 closing the last start is 18:30. */
 export function allSlots(): string[] {
   const out: string[] = [];
-  for (let h = SITE.hours.start; h < SITE.hours.end; h++) out.push(`${String(h).padStart(2, "0")}:00`);
+  for (let m = SITE.hours.start * 60; m + SITE.callMinutes <= SITE.hours.end * 60; m += SITE.slotStep) out.push(toTime(m));
   return out;
 }
 
@@ -83,13 +87,12 @@ export function freeSlots(date: string): string[] {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !isOpenDay(date)) return [];
   const now = nowInSiteTz();
   if (date < now.date) return [];
-  const taken = new Set(takenTimes(date));
+  const dur = SITE.callMinutes;
+  const booked = takenTimes(date).map(toMinutes); // each booking blocks [start, start + dur)
   return allSlots().filter((t) => {
-    if (taken.has(t)) return false;
-    if (date === now.date) {
-      const [h, m] = t.split(":").map(Number);
-      return h * 60 + m > now.minutes + 60; // at least one hour notice
-    }
+    const start = toMinutes(t);
+    if (booked.some((b) => start < b + dur && b < start + dur)) return false; // overlaps another meeting
+    if (date === now.date) return start > now.minutes + 60; // at least one hour notice
     return true;
   });
 }

@@ -6,8 +6,16 @@ export const SITE = {
   phoneDisplay: "+20 100 000 0000",
   city: { en: "Alexandria, Egypt", ar: "الإسكندرية، مصر" },
   timezone: "Africa/Cairo",
-  // Egypt weekend: Friday (5) and Saturday (6)
-  closedDays: [5, 6],
-  hours: { start: 10, end: 18 }, // slots start 10:00 ... last at 17:00
+  // Days the company does not take meetings. 0 = Sunday ... 6 = Saturday. Now: Monday, Thursday, Friday.
+  // Saturday is open (10:00 to 20:00). To reopen a day, delete its number from this list.
+  closedDays: [1, 4, 5],
+  // Meetings can start from `start` and must finish by `end` (24h clock): 10:00 to 20:00.
+  hours: { start: 10, end: 20 },
+  // One meeting takes this long. While it is booked, no other client can book a time that overlaps it.
+  callMinutes: 90,
+  // Start times are offered every this many minutes (10:00, 10:30, 11:00 ...).
+  slotStep: 30,
+  // How clients can meet. Add "phone" or "visit" to offer them again (the choice then shows in the booking form).
+  modes: ["video"] as ("video" | "phone" | "visit")[],
   daysAhead: 21,
 };

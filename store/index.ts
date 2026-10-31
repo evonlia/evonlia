@@ -1,6 +1,7 @@
 import { configureStore, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Lang } from "@/lib/i18n";
 import type { Theme } from "@/lib/theme";
+import { SITE } from "@/lib/site";
 
 /* ---------- UI slice: language + mobile menu ---------- */
 type UiState = { lang: Lang; menuOpen: boolean; theme: Theme };
@@ -31,7 +32,7 @@ type BookingState = {
   confirmed: Confirmed | null;
 };
 const initialBooking: BookingState = {
-  step: 0, serviceId: null, date: null, time: null, mode: "video",
+  step: 0, serviceId: null, date: null, time: null, mode: SITE.modes[0],
   details: { name: "", email: "", phone: "", company: "", message: "" },
   confirmed: null,
 };

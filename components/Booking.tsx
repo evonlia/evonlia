@@ -110,7 +110,7 @@ export default function Booking() {
     </label>
   );
 
-  const modes: Mode[] = ["video", "phone", "visit"];
+  const modes: Mode[] = SITE.modes;
 
   return (
     <section id="book" className="section book">
@@ -199,14 +199,18 @@ export default function Booking() {
                     </>
                   )}
 
-                  <h3 className="panel__q">{t.booking.mode}</h3>
-                  <div className="chips" role="radiogroup" aria-label={t.booking.mode}>
-                    {modes.map((m) => (
-                      <button key={m} type="button" role="radio" aria-checked={b.mode === m} className="chip" data-on={b.mode === m} onClick={() => dispatch(chooseMode(m))}>
-                        {t.booking.modes[m]}
-                      </button>
-                    ))}
-                  </div>
+                  {modes.length > 1 && (
+                    <>
+                      <h3 className="panel__q">{t.booking.mode}</h3>
+                      <div className="chips" role="radiogroup" aria-label={t.booking.mode}>
+                        {modes.map((m) => (
+                          <button key={m} type="button" role="radio" aria-checked={b.mode === m} className="chip" data-on={b.mode === m} onClick={() => dispatch(chooseMode(m))}>
+                            {t.booking.modes[m]}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                   {errors.time && <p className="err" role="alert">{errors.time}</p>}
                 </div>
               )}
